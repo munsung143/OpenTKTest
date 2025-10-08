@@ -7,14 +7,25 @@ namespace TestProjectTK
 {
     public class Game : GameWindow
     {
-        // 삼각형의 NDC 좌표
+        // 사각형의 NDC 좌표
         float[] vertices = {
-            -0.5f, -0.5f, 0.0f, //Bottom-left vertex
-            0.5f, -0.5f, 0.0f, //Bottom-right vertex
-            0.0f,  0.5f, 0.0f  //Top vertex
+         0.5f,  0.5f, 0.0f,  // top right
+         0.5f, -0.5f, 0.0f,  // bottom right
+        -0.5f, -0.5f, 0.0f,  // bottom left
+        -0.5f,  0.5f, 0.0f   // top left
         };
+        uint[] indices = {  // note that we start from 0!
+        0, 1, 3,   // first triangle
+        1, 2, 3    // second triangle
+        };
+
+        // OpenGL의 오브젝트에 대한 핸들. 해당 오브젝트가 GPU의 어디에 존재하는지를
+        // 나타내는 용도의 정수 값. 마치 포인터처럼 이것을 이용해 오브젝트에 접근
+        // 오브젝트를 만들 때 값 할당받음
         int VertexBufferObject;
         int VertexArrayObject;
+
+        int ElementBufferObject;
 
         Shader shader;
         public Game(int width, int height, string title) : base(GameWindowSettings.Default, new NativeWindowSettings() { ClientSize = (width, height), Title = title })
@@ -38,13 +49,18 @@ namespace TestProjectTK
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
             // 셰이더 프로그램 생성용 객체 생성
-            shader = new Shader("C:\\CT\\TestProjectTK\\shader.vert", "C:\\CT\\TestProjectTK\\shader.frag");
+            shader = new Shader("C:\\Git\\OpenTKTest\\TestProjectTK\\shader.vert", "C:\\Git\\OpenTKTest\\TestProjectTK\\shader.frag");
 
             // VBO생성 및 아이디 할당
             VertexBufferObject = GL.GenBuffer();
             // VBO 바인딩
+            // OpenGL의 전역 상태를 가진다. 아래 코드 호출 이후로
+            // VBO를 수정하는 코드는 모두 바인딩된 VertexBufferObject VBO에 적용됨
+            // 다른 VBO를 바인딩하기 전까지.
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
-            //다음 포멧의 버퍼를 만든다
+
+            // 버퍼에 실제 데이터 전달
+            // 버퍼의 포멧은 다음과 같다.
             // v1X, v1Y, v1Z, v2X, v2Y, v2Z, v3X, v3Y, v3Z 각 float로 4바이트, 총 36바이트, Stride:12바이트
             GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * sizeof(float), vertices, BufferUsageHint.StaticDraw);
 
@@ -64,6 +80,14 @@ namespace TestProjectTK
             // 어트리뷰트의 위치(location)을 매개변수로
             GL.EnableVertexAttribArray(0);
 
+            // EBO 생성
+            ElementBufferObject = GL.GenBuffer();
+            // 바인딩
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBufferObject);
+            // 값 할당
+
+            GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Length * sizeof(uint), indices, BufferUsageHint.StaticDraw);
+
             shader.Use();
 
             //Code goes here
@@ -79,7 +103,10 @@ namespace TestProjectTK
             // mode : 어떤 식으로 그릴 것인지
             // first : 정점 배열의 첫 위치
             // count : 그릴 정점의 개수
-            GL.DrawArrays(PrimitiveType.Triangles, 0, 3);
+            //GL.DrawArrays(PrimitiveType.Triangles, 0, 3);
+
+            // EBO를 활용한 드로잉
+            GL.DrawElements(PrimitiveType.Lines, indices.Length, DrawElementsType.UnsignedInt, 0);
 
             //Code goes here.
             // 더블 버퍼링 : openTK의 두 가지 드로잉 영역을 뒤바꿈 (이미 화면상에 렌더링된 영역 <-> 이제 렌더링 해야 할 영역)

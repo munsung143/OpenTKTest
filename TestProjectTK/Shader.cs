@@ -7,7 +7,7 @@ namespace TestProjectTK
 {
     public class Shader
     {
-        int Handle; //최종적으로 컴파일된 셰이더 프로그램의 위치를 나타냄 
+        public int Handle; //최종적으로 컴파일된 셰이더 프로그램의 위치를 나타냄 
 
         public Shader(string vertexPath, string fragmentPath)
         {
