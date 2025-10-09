@@ -9,10 +9,10 @@ namespace TestProjectTK
     {
         public static void Main()
         {
-            //using (Game3 game = new Game3(800, 600, "LearnOpenTK"))
-            //{
-            //    game.Run();
-            //}
+            using (Game3 game = new Game3(800, 600, "LearnOpenTK"))
+            {
+                game.Run();
+            }
             
         }
         public static void Diamond(int a)

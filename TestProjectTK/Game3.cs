@@ -43,6 +43,10 @@ namespace TestProjectTK
             {
                 GL.BufferData(BufferTarget.ArrayBuffer, vertices2.Length * sizeof(float), vertices2, BufferUsageHint.StaticDraw);
             }
+            if (KeyboardState.IsKeyPressed(Keys.S))
+            {
+                GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * sizeof(float), vertices, BufferUsageHint.StaticDraw);
+            }
         }
         protected override void OnLoad()
         {
