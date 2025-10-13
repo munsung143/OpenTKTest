@@ -8,7 +8,7 @@ namespace TestProjectTK
     public class GameTexture : GameWindow
     {
         // 사각형의 NDC 좌표
-        float[] vertices =
+        float[] _vertices =
         {
     //Position          Texture coordinates
          0.5f,  0.5f, 0.0f, 1.0f, 1.0f, // top right
@@ -16,7 +16,7 @@ namespace TestProjectTK
         -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, // bottom left
         -0.5f,  0.5f, 0.0f, 0.0f, 1.0f  // top left
         };
-        uint[] indices = {  // note that we start from 0!
+        uint[] _indices = {  // note that we start from 0!
         0, 1, 3,   // first triangle
         1, 2, 3    // second triangle
         };
@@ -50,8 +50,8 @@ namespace TestProjectTK
                 usage: BufferUsageHint.StaticDraw);
 
             _shader = new Shader(
-                vertexPath: "C:\\Git\\OpenTKTest\\TestProjectTK\\Texture\\shader.vert",
-                fragmentPath: "C:\\Git\\OpenTKTest\\TestProjectTK\\Texture\\shader.frag");
+                vertexPath: "Texture/shader.vert",
+                fragmentPath: "Texture/shader.frag");
             _shader.Use();
 
             _vertexArrayObject = GL.GenVertexArray();
@@ -88,15 +88,16 @@ namespace TestProjectTK
                 usage: BufferUsageHint.StaticDraw);
 
 
-            _texture = new Texture("C:\\Git\\OpenTKTest\\TestProjectTK\\Texture\\container.png");
+            _texture = new Texture("Texture/container.png");
             _texture.Use();
         }
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             base.OnRenderFrame(e);
             GL.Clear(ClearBufferMask.ColorBufferBit);
-            _shader.Use();
             GL.BindVertexArray(_vertexArrayObject);
+            _shader.Use();
+            _texture.Use();
             GL.DrawElements(
                 mode: PrimitiveType.Triangles,
                 count: indices.Length,

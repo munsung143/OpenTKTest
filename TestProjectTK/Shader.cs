@@ -8,12 +8,13 @@ namespace TestProjectTK
     public class Shader
     {
         public int Handle; //최종적으로 컴파일된 셰이더 프로그램의 위치를 나타냄 
+        string defPath = "C:/Git/OpenTKTest/TestProjectTK/";
 
         public Shader(string vertexPath, string fragmentPath)
         {
             // 셰이더 소스코드 읽어들여 문자열에 저장하는 과정
-            string VertexShaderSource = File.ReadAllText(vertexPath);
-            string FragmentShaderSource = File.ReadAllText(fragmentPath);
+            string VertexShaderSource = File.ReadAllText(defPath + vertexPath);
+            string FragmentShaderSource = File.ReadAllText(defPath + fragmentPath);
 
             // 각 셰이더를 생성하고 해당 셰이더에 접근 가능한 int값 지정. (핸들)
             // 위에서 가져온 소스코드를 셰이더에 바인드 시켜준다.

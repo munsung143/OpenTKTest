@@ -8,16 +8,19 @@ namespace TestProjectTK
     {
         public int Handle;
 
+        string defPath = "C:/Git/OpenTKTest/TestProjectTK/";
+
         public Texture(string path)
         {
             // 사용할 빈 텍스처 생성
             Handle = GL.GenTexture();
+            // 테스처 바인드
             GL.ActiveTexture(TextureUnit.Texture0);
             GL.BindTexture(TextureTarget.Texture2D, Handle);
             // 이미지를 좌하단(기본)이 아닌 좌상단부터 불러오도록 설정
             StbImage.stbi_set_flip_vertically_on_load(1);
             // 이미지 로드
-            ImageResult image = ImageResult.FromStream(File.OpenRead(path), ColorComponents.RedGreenBlueAlpha);
+            ImageResult image = ImageResult.FromStream(File.OpenRead(defPath + path), ColorComponents.RedGreenBlueAlpha);
             // 텍스처 업로드
             GL.TexImage2D(
                 target: TextureTarget.Texture2D, // 텍스처 타입, 1D 3D도 있음
