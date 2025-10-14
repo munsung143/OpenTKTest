@@ -1,7 +1,6 @@
 ﻿using OpenTK.Graphics.OpenGL4;
 using System.Drawing;
 using System.Drawing.Imaging;
-using PixelFormat = OpenTK.Graphics.OpenGL4.PixelFormat;
 using StbImageSharp;
 using System.IO;
 
@@ -14,10 +13,12 @@ namespace TK_Texture
 
         public static Texture LoadFromFile(string path)
         {
-            // 텍스처 생성 및 바인드, 2D텍스처 사용
+            // 텍스처 생성
+            // Texture0유닛을 활성화 하고, (GPU내부의 텍스처 저장 공간)
+            // 해당 유닛에 2D텍스처와 핸들을 바인드.
             int handle = GL.GenTexture();
             GL.ActiveTexture(TextureUnit.Texture0);
-            GL.BindTexture(TextureTarget.Texture2D, handle);
+            GL.BindTexture(TextureTarget.Texture2D, handle); 
 
             // 이미지를 좌하단(기본)이 아닌 좌상단부터 불러오도록 설정
             StbImage.stbi_set_flip_vertically_on_load(1);

@@ -39,14 +39,13 @@ namespace TestProjectTK
             base.OnLoad();
 
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-            
 
             _vertexBufferObject = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
             GL.BufferData(
                 target: BufferTarget.ArrayBuffer,
-                size: vertices.Length * sizeof(float),
-                data: vertices,
+                size: _vertices.Length * sizeof(float),
+                data: _vertices,
                 usage: BufferUsageHint.StaticDraw);
 
             _shader = new Shader(
@@ -83,8 +82,8 @@ namespace TestProjectTK
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, _elementBufferObject);
             GL.BufferData(
                 target: BufferTarget.ElementArrayBuffer,
-                size: indices.Length * sizeof(float),
-                data: indices,
+                size: _indices.Length * sizeof(float),
+                data: _indices,
                 usage: BufferUsageHint.StaticDraw);
 
 
@@ -100,7 +99,7 @@ namespace TestProjectTK
             _texture.Use();
             GL.DrawElements(
                 mode: PrimitiveType.Triangles,
-                count: indices.Length,
+                count: _indices.Length,
                 type: DrawElementsType.UnsignedInt,
                 indices: 0);
             SwapBuffers();
