@@ -95,6 +95,7 @@ namespace TK_Texture
             _shader.Use();
 
             GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
+            SwapBuffers();
         }
         protected override void OnFramebufferResize(FramebufferResizeEventArgs e)
         {
