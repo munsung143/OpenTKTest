@@ -9,6 +9,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TK_Texture", "TK_Texture", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TK_Texture", "..\TK_Texture\TK_Texture.csproj", "{32639D07-7AF4-4487-ABCC-32F8C0F532BD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TK_MultTexture", "TK_MultTexture", "{E1E2F06B-3758-4DFA-92AE-232014B0DE8A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TK_MultTexture", "..\TK_MultTexture\TK_MultTexture.csproj", "{80A09742-5C4E-2D48-D670-B406B65CE949}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,12 +27,17 @@ Global
 		{32639D07-7AF4-4487-ABCC-32F8C0F532BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32639D07-7AF4-4487-ABCC-32F8C0F532BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32639D07-7AF4-4487-ABCC-32F8C0F532BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80A09742-5C4E-2D48-D670-B406B65CE949}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80A09742-5C4E-2D48-D670-B406B65CE949}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80A09742-5C4E-2D48-D670-B406B65CE949}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80A09742-5C4E-2D48-D670-B406B65CE949}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{32639D07-7AF4-4487-ABCC-32F8C0F532BD} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{80A09742-5C4E-2D48-D670-B406B65CE949} = {E1E2F06B-3758-4DFA-92AE-232014B0DE8A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {712BE8FC-EC41-40F9-9C46-50A4A48B5D30}
