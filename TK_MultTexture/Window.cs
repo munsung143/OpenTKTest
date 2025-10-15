@@ -28,11 +28,14 @@ namespace TK_Texture
 
         private Shader _shader;
         private Texture _texture;
+        private Texture _texture2;
 
         public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings) { }
         protected override void OnLoad()
         {
+            // OpenGL은 무언가를 설정하기 전에 바인드, 그걸 사용하기 전에 바인드를 해줘야 한다.
+            // 현재 상태에 있는 것만 제어가 가능하다.
             base.OnLoad();
 
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -52,7 +55,7 @@ namespace TK_Texture
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, _elementBufferObject);
             GL.BufferData(
                 target: BufferTarget.ElementArrayBuffer,
-                size: _indices.Length * sizeof(float),
+                size: _indices.Length * sizeof(uint),
                 data: _indices,
                 usage: BufferUsageHint.StaticDraw);
 
@@ -81,6 +84,14 @@ namespace TK_Texture
 
             _texture = Texture.LoadFromFile("Resources/container.png");
             _texture.Use(TextureUnit.Texture0);
+            _texture2 = Texture.LoadFromFile("Resources/awesomeface.png");
+            _texture2.Use(TextureUnit.Texture1);
+
+            // 셰이더의 유니폼 샘플러2D가 어떤 텍스처 유닛을 사용할건지 명시해줘야 함
+            _shader.SetInt("texture0", 0);
+            _shader.SetInt("texture1", 1);
+
+
 
         }
         protected override void OnRenderFrame(FrameEventArgs args)
@@ -92,6 +103,7 @@ namespace TK_Texture
             GL.BindVertexArray(_vertexArrayObject);
 
             _texture.Use(TextureUnit.Texture0);
+            _texture2.Use(TextureUnit.Texture1);
             _shader.Use();
 
             GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
