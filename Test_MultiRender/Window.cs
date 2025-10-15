@@ -74,13 +74,15 @@ namespace TK_Texture
             _texture = Texture.LoadFromFile("Resources/container.png");
             _texture2 = Texture.LoadFromFile("Resources/awesomeface.png");
 
+
+            // 순서 : VAO생성 및 바인딩 - (셰이더 활성화) - VBO생성 및 바인딩 - (EBO생성 및 바인딩) - VAO어트리뷰트 링크
             // 사각형
+            _vao[0] = GL.GenVertexArray();
+            _shader[0].Use();
+            GL.BindVertexArray(_vao[0]);
             _vbo[0] = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vbo[0]);
             GL.BufferData(BufferTarget.ArrayBuffer, _rectangle.Length * sizeof(float), _rectangle, BufferUsageHint.StaticDraw);
-            _vao[0] = GL.GenVertexArray();
-            //_shader[0].Use();
-            GL.BindVertexArray(_vao[0]);
             _ebo = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, _ebo);
             GL.BufferData(BufferTarget.ElementArrayBuffer, _rectIndices.Length * sizeof(uint), _rectIndices, BufferUsageHint.StaticDraw);
@@ -104,12 +106,12 @@ namespace TK_Texture
                 offset: 3 * sizeof(float));
 
             // 무지개 삼각형
+            _vao[1] = GL.GenVertexArray();
+            _shader[1].Use();
+            GL.BindVertexArray(_vao[1]);
             _vbo[1] = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vbo[1]);
             GL.BufferData(BufferTarget.ArrayBuffer, _rainbow.Length * sizeof(float), _rainbow, BufferUsageHint.StaticDraw);
-            _vao[1] = GL.GenVertexArray();
-            //_shader[1].Use();
-            GL.BindVertexArray(_vao[1]);
             int vertextLocation2 = _shader[1].GetAttribLocation("aPosition");
             GL.EnableVertexAttribArray(vertextLocation2);
             GL.VertexAttribPointer(
@@ -130,12 +132,12 @@ namespace TK_Texture
                 offset: 3 * sizeof(float));
 
             //일반삼각형
+            _vao[2] = GL.GenVertexArray();
+            _shader[2].Use();
+            GL.BindVertexArray(_vao[2]);
             _vbo[2] = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vbo[2]);
             GL.BufferData(BufferTarget.ArrayBuffer, _triangle.Length * sizeof(float), _triangle, BufferUsageHint.StaticDraw);
-            _vao[2] = GL.GenVertexArray();
-            //_shader[2].Use();
-            GL.BindVertexArray(_vao[2]);
             int location2 = _shader[2].GetAttribLocation("aPosition");
             GL.EnableVertexAttribArray(location2);
             GL.VertexAttribPointer(
