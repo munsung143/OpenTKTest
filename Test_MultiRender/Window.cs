@@ -72,6 +72,13 @@ namespace TK_Texture
             _shader[0].SetInt("texture0", 0);
             _shader[0].SetInt("texture1", 1);
 
+            // 행렬을 통한 회전, 크기변환
+            // 계산한 행렬을 유니폼 변수로 옮긴 후 정점 셰이더에 반영하기
+            Matrix4 rotation = Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(90.0f));
+            Matrix4 scale = Matrix4.CreateScale(0.5f, 0.5f, 0.5f);
+            Matrix4 trans = rotation * scale;
+            _shader[0].SetMatrix4("transform", trans);
+
             int rect_loc_position = _shader[0].GetAttribLocation("aPosition");
             int rect_loc_texCoord = _shader[0].GetAttribLocation("aTexCoord");
             int rainbow_loc_position = _shader[1].GetAttribLocation("aPosition");

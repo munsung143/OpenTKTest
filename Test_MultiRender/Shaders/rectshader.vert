@@ -5,6 +5,8 @@ layout(location = 1) in vec2 aTexCoord;
 
 out vec2 texCoord;
 
+uniform mat4 transform;
+
 void main(void)
 {
     
@@ -12,5 +14,5 @@ void main(void)
     texCoord = aTexCoord;
 
     // Position remains the same
-    gl_Position = vec4(aPosition, 1.0);
+    gl_Position = vec4(aPosition, 1.0) * transform;
 }
