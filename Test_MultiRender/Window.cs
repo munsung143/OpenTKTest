@@ -49,6 +49,10 @@ namespace TK_Texture
         private Texture[] _texture;
         Stopwatch timer;
 
+        double timescale = 1;
+        double total = 0;
+        double timeValue = 0;
+
         public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings) { }
         protected override void OnLoad()
@@ -71,13 +75,6 @@ namespace TK_Texture
 
             _shader[0].SetInt("texture0", 0);
             _shader[0].SetInt("texture1", 1);
-
-            // 행렬을 통한 회전, 크기변환
-            // 계산한 행렬을 유니폼 변수로 옮긴 후 정점 셰이더에 반영하기
-            Matrix4 rotation = Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(90.0f));
-            Matrix4 scale = Matrix4.CreateScale(0.5f, 0.5f, 0.5f);
-            Matrix4 trans = rotation * scale;
-            _shader[0].SetMatrix4("transform", trans);
 
             int rect_loc_position = _shader[0].GetAttribLocation("aPosition");
             int rect_loc_texCoord = _shader[0].GetAttribLocation("aTexCoord");
@@ -183,6 +180,22 @@ namespace TK_Texture
             base.OnRenderFrame(args);
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
+            double delta = timer.Elapsed.TotalSeconds - total;
+            timeValue += delta * timescale;
+            total = timer.Elapsed.TotalSeconds;
+            float rotateValue = (float)timeValue * 200;
+            float greenValue = (float)Math.Sin(timeValue) / 2.0f + 0.5f;
+            float scaleValue = (float)Math.Sin((timeValue - Math.PI/2)) / 2.0f + 0.5f;
+            float moveValue = (float)Math.Sin(timeValue/2);
+
+            // 행렬을 통한 회전, 크기변환
+            // 계산한 행렬을 유니폼 변수로 옮긴 후 정점 셰이더에 반영하기
+            Matrix4 rotation = Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(rotateValue));
+            Matrix4 scale = Matrix4.CreateScale(scaleValue, scaleValue, scaleValue);
+            Matrix4 move = Matrix4.CreateTranslation(0, moveValue, 0);
+            Matrix4 trans = rotation * scale * move;
+            _shader[0].SetMatrix4("transform", trans);
+
             _shader[0].Use();
             _texture[0].Use(TextureUnit.Texture0);
             _texture[1].Use(TextureUnit.Texture1);
@@ -193,10 +206,8 @@ namespace TK_Texture
             GL.BindVertexArray(_vao[1]);
             GL.DrawArrays(PrimitiveType.Triangles, 0, 3);
 
-            double timeValue = timer.Elapsed.TotalSeconds;
-            float greenValue =  (float)Math.Sin(timeValue) / 2.0f + 0.5f;
-            _shader[2].SetVector4("ourColor", new Vector4(0.0f, greenValue, 0.0f, 1.0f));
             _shader[2].Use();
+            _shader[2].SetVector4("ourColor", new Vector4(0.0f, greenValue, 0.0f, 1.0f));
             GL.BindVertexArray(_vao[2]);
             GL.DrawArrays(PrimitiveType.Triangles, 0, 3);
 
@@ -211,6 +222,16 @@ namespace TK_Texture
         {
             base.OnUpdateFrame(args);
             if (KeyboardState.IsKeyDown(Keys.Escape)) Close();
+            if (KeyboardState.IsKeyDown(Keys.A))
+            {
+                timescale += 0.001f;
+                Console.WriteLine(timescale);
+            }
+            else if (KeyboardState.IsKeyDown(Keys.S))
+            {
+                timescale -= 0.001f;
+                Console.WriteLine(timescale);
+            }
         }
         protected override void OnResize(ResizeEventArgs e)
         {
