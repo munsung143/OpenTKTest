@@ -59,13 +59,10 @@ namespace TK_Texture
         private Shader _shader;
         private Texture[] _texture;
 
-        Stopwatch timer;
-        double timescale = 1;
-        double total = 0;
-        double timeValue = 0;
-
         float rotateY;
         float rotateX;
+
+        float projDeg = 45f;
 
         public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings) { }
@@ -87,10 +84,7 @@ namespace TK_Texture
             _texture[0] = Texture.LoadFromFile("Resources/container.png");
             _texture[1] = Texture.LoadFromFile("Resources/awesomeface.png");
 
-            timer = new Stopwatch();
-            timer.Start();
-
-            // 깊이 버퍼 사용 활성화
+            // 깊이 버퍼(Z buffer) 사용 활성화
             GL.Enable(EnableCap.DepthTest);
 
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -135,21 +129,16 @@ namespace TK_Texture
             base.OnRenderFrame(args);
             GL.Clear(ClearBufferMask.ColorBufferBit);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-
-            double delta = timer.Elapsed.TotalSeconds - total;
-            total = timer.Elapsed.TotalSeconds;
-            timeValue += delta * timescale;
-            float rotateValue = (float)timeValue * 200;
            
-
-            // 행렬을 통한 회전, 크기변환
-            // 계산한 행렬을 유니폼 변수로 옮긴 후 정점 셰이더에 반영하기
             Matrix4 rotationX = Matrix4.CreateRotationX(MathHelper.DegreesToRadians(rotateX));
             Matrix4 rotationY = Matrix4.CreateRotationY(MathHelper.DegreesToRadians(rotateY));
+            // Y축에 대한 회전이 절대 좌표가 아니라 종속된 로컬 좌표계에 대한 회전처럼 된다.
+            // Y축에 대하여 돌린 후에 X축에 대하여 돌리기 때문이다.
+            // Y회전값에 변화가 발생하여도 렌더링마다 처음에 정렬된 상태로 Y축 회전 후 X축에 대하여 돌리기 때문
             Matrix4 trans = rotationY * rotationX;
 
             Matrix4 view = Matrix4.CreateTranslation(0.0f, 0.0f, -3f);
-            Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(45.0f), 800f / 600, 0.1f, 100.0f);
+            Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(projDeg), 800f / 600, 0.1f, 100.0f);
 
             _shader.SetMatrix4("transform", trans);
             _shader.SetMatrix4("view", view);
@@ -174,6 +163,8 @@ namespace TK_Texture
             if (KeyboardState.IsKeyDown(Keys.A)) rotateY -= 0.03f;
             if (KeyboardState.IsKeyDown(Keys.S)) rotateX += 0.03f;
             if (KeyboardState.IsKeyDown(Keys.D)) rotateY += 0.03f;
+            if (KeyboardState.IsKeyDown(Keys.Up)) projDeg += 0.01f;
+            if (KeyboardState.IsKeyDown(Keys.Down)) projDeg -= 0.01f;
         }
         protected override void OnResize(ResizeEventArgs e)
         {
