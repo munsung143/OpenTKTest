@@ -11,19 +11,18 @@ namespace TK_Texture
         {
             Vector2i size = new Vector2i(800, 600);
             string title = "Texture Practice";
-
+            
             NativeWindowSettings setting = new NativeWindowSettings()
             {
                 ClientSize = size,
                 Title = title,
                 Flags = ContextFlags.ForwardCompatible
             };
-
+            
             using (var window = new Window(GameWindowSettings.Default, setting))
             {
                 window.Run();
             }
-
         }
     }
 }

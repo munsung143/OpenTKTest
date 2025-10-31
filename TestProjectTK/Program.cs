@@ -9,11 +9,13 @@ namespace TestProjectTK
     {
         public static void Main()
         {
-            using (GameTexture game = new GameTexture(800, 600, "LearnOpenTK"))
-            {
-                game.Run();
-            }
-            
+            //using (GameTexture game = new GameTexture(800, 600, "LearnOpenTK"))
+            //{
+            //    game.Run();
+            //}
+
+
+            Diamond(500);
 
         }
 
