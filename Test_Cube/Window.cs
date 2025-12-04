@@ -78,8 +78,8 @@ namespace TK_Texture
             _shader.SetInt("texture0", 0);
             _shader.SetInt("texture1", 1);
 
-            int rect_loc_position = _shader.GetAttribLocation("aPosition");
-            int rect_loc_texCoord = _shader.GetAttribLocation("aTexCoord");
+            int loc_position = _shader.GetAttribLocation("aPosition");
+            int loc_texCoord = _shader.GetAttribLocation("aTexCoord");
 
             _texture[0] = Texture.LoadFromFile("Resources/container.png");
             _texture[1] = Texture.LoadFromFile("Resources/awesomeface.png");
@@ -99,17 +99,17 @@ namespace TK_Texture
                 size: _cube.Length * sizeof(float),
                 data: _cube,
                 usage: BufferUsageHint.StaticDraw);
-            GL.EnableVertexAttribArray(rect_loc_position);
+            GL.EnableVertexAttribArray(loc_position);
             GL.VertexAttribPointer(
-                index: rect_loc_position,
+                index: loc_position,
                 size: 3,
                 type: VertexAttribPointerType.Float,
                 normalized: false,
                 stride: 5 * sizeof(float),
                 offset: 0);
-            GL.EnableVertexAttribArray(rect_loc_texCoord);
+            GL.EnableVertexAttribArray(loc_texCoord);
             GL.VertexAttribPointer(
-                index: rect_loc_texCoord,
+                index: loc_texCoord,
                 size: 2,
                 type: VertexAttribPointerType.Float,
                 normalized: false,

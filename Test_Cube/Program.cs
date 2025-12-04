@@ -18,11 +18,26 @@ namespace TK_Texture
                 Title = title,
                 Flags = ContextFlags.ForwardCompatible
             };
-            
-            using (var window = new Window(GameWindowSettings.Default, setting))
+
+            string? s = Console.ReadLine();
+            if (s == "1")
             {
-                window.Run();
+                using (var window = new Window(GameWindowSettings.Default, setting))
+                {
+                    window.Run();
+                }
             }
+            else if (s == "2")
+            {
+                using (var window = new Window2(GameWindowSettings.Default, setting))
+                {
+                    window.Run();
+                }
+            }
+
+
+
+
         }
     }
 }
