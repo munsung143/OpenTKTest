@@ -9,6 +9,7 @@ namespace TK_Texture
 {
     public class Shader
     {
+        //셰이더를 다루는 핸들러
         public readonly int Handle;
         private readonly Dictionary<string, int> _uniformLocations;
         private bool disposedValue = false;

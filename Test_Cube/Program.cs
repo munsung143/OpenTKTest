@@ -34,6 +34,13 @@ namespace TK_Texture
                     window.Run();
                 }
             }
+            else if (s == "3")
+            {
+                using (var window = new Window3(GameWindowSettings.Default, setting))
+                {
+                    window.Run();
+                }
+            }
 
 
 
