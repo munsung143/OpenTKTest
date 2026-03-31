@@ -12,6 +12,10 @@
 		<None Include="..\Resources\**\*.*" Link="Resources\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Include="Cube.cs" />
+	</ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="OpenTK" Version="4.9.4" />
