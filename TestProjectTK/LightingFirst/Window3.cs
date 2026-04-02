@@ -51,10 +51,10 @@ namespace TestProjectTK
             shaders.Add(_shader);
 
             // 큐브 생성
-            cubes.Add(new Cube(new Vector3(0f, 3f, -10f), 0.5f, textures[0], _shader));
-            cubes.Add(new Cube(new Vector3(0f, -3f, -15f), 0.5f, textures[1], _shader));
-            cubes.Add(new Cube(new Vector3(0f, 0f, -1f), 0.1f, textures[2], _shader));
-            cubes.Add(new Cube(new Vector3(-30f, 20f, -60f), 20f, textures[1], _shader));
+            cubes.Add(new Cube(new Vector3(0f, 3f, -10f), 0.5f, new Color4(1.0f, 0.0f, 0.0f, 1.0f), textures[0], shaders[0]));
+            cubes.Add(new Cube(new Vector3(0f, -3f, -15f), 0.5f, Color4.White, textures[1], shaders[0]));
+            cubes.Add(new Cube(new Vector3(0f, 0f, -1f), 0.1f, Color4.White, textures[2], shaders[0]));
+            cubes.Add(new Cube(new Vector3(-30f, 20f, -60f), 20f, Color4.White, textures[1], shaders[0]));
 
         }
         protected override void OnRenderFrame(FrameEventArgs args)
@@ -66,6 +66,7 @@ namespace TestProjectTK
             for (int i = 0; i < cubes.Count; i++)
             {
                 cubes[i].SetViewModel(cam.view, projection);
+                cubes[i].SetColor();
                 cubes[i].UseTexture();
                 cubes[i].BindArray();
                 GL.DrawArrays(PrimitiveType.Triangles, 0, 36);

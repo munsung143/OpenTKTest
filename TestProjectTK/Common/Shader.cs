@@ -66,7 +66,9 @@ namespace TestProjectTK.Common
                 string key = GL.GetActiveUniform(Handle, i, out _, out _);
                 int location = GL.GetUniformLocation(Handle, key);
                 _uniformLocations.Add(key, location);
+                Console.WriteLine(key);
             }
+            Console.WriteLine(" ");
 
         }
         // 셰이더 활성화 래퍼 함수
