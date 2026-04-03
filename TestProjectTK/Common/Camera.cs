@@ -14,7 +14,7 @@ namespace TestProjectTK.Common
 {
     public class Camera
     {
-        Vector3 position = Vector3.Zero;
+        public Vector3 position = Vector3.Zero;
         Vector3 front = -Vector3.UnitZ;
         Vector3 up = Vector3.UnitY;
 
@@ -72,7 +72,7 @@ namespace TestProjectTK.Common
             else if (pitch < -89) pitch = -89;
             else pitch -= mouseDeltaY * mouseSensitivity;
             yaw += mouseDelatX * mouseSensitivity;
-            Console.WriteLine(yaw);
+            //Console.WriteLine(yaw);
 
             front.X = (float)Math.Cos(MathHelper.DegreesToRadians(pitch)) * (float)Math.Cos(MathHelper.DegreesToRadians(yaw));
             front.Y = (float)Math.Sin(MathHelper.DegreesToRadians(pitch));

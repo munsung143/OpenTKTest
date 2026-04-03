@@ -9,7 +9,7 @@ namespace TestProjectTK
     {
         public static void Main()
         {
-            Vector2i size = new Vector2i(800, 600);
+            Vector2i size = new Vector2i(1600, 1200);
             string title = "Texture Practice";
             
             NativeWindowSettings setting = new NativeWindowSettings()

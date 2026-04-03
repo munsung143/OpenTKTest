@@ -15,13 +15,18 @@ namespace TestProjectTK
         public int vao;
         public int vbo;
         public Shader shader;
-        public Cube(Vector3 pos, float size, Color4 color, Texture texture, Shader shader)
+        public Material material;
+        
+
+        public float yaw;
+        public Cube(Vector3 pos, float size, Color4 color, Texture texture, Shader shader, Material material)
         {
             this.Pos = pos;
             this.size = size;
             this.shader = shader;
             this.texture = texture;
             this.color = color;
+            this.material = material;
             // 총6개 면에 대하여, 한 면에 3개의 삼각형의 좌표, 텍스처의 적용 범위 지정
             Vertices = new float[]{
 
@@ -108,17 +113,30 @@ namespace TestProjectTK
                 stride: 8 * sizeof(float),
                 offset: 5 * sizeof(float));
         }
-        public void SetViewModel(Matrix4 camView, Matrix4 projection)
+        public virtual void SetViewModel(Matrix4 camView, Matrix4 projection)
         {
             shader.SetMatrix4("view", camView);
             shader.SetMatrix4("projection", projection);
-            shader.SetMatrix4("transform", Matrix4.CreateTranslation(Pos));
+            Matrix4 model = Matrix4.CreateRotationY(yaw) * Matrix4.CreateTranslation(Pos);
+            Matrix4 normalModel = Matrix4.Transpose(Matrix4.Invert(model));
+            shader.SetMatrix4("model", model);
+            shader.SetMatrix4("normalModel", normalModel);
         }
-        public void SetColor()
+        public virtual void SetLight(Light light, Vector3 viewPos)
         {
-            shader.SetVector4("objectColor", (Vector4)color);
-            shader.SetVector3("lightPos", new Vector3(0,0,0));
-            shader.SetVector3("lightColor", (Vector3)new Vector3(1f, 1f, 1f));
+            shader.SetVector3("cameraPos", viewPos);
+
+            shader.SetVector3("light.position", light.position);
+            shader.SetVector4("light.ambient", (Vector4)light.ambient);
+            shader.SetVector4("light.diffuse", (Vector4)light.diffuse);
+            shader.SetVector4("light.specular", (Vector4)light.specular);
+
+            shader.SetFloat("material.shininess", material.shininess);
+            shader.SetVector4("material.ambient", (Vector4)material.ambient);
+            shader.SetVector4("material.diffuse", (Vector4)material.diffuse);
+            shader.SetVector4("material.specular", (Vector4)material.specular);
+
+
         }
         public void UseTexture()
         {
@@ -128,6 +146,24 @@ namespace TestProjectTK
         public void BindArray()
         {
             GL.BindVertexArray(vao);
+        }
+    }
+
+    public class LightingCube : Cube
+    {
+        public LightingCube(Vector3 pos, float size, Color4 color, Texture texture, Shader shader, Material material) : base(pos, size, color, texture, shader, material) { }
+
+        public override void SetViewModel(Matrix4 camView, Matrix4 projection)
+        {
+            shader.SetMatrix4("view", camView);
+            shader.SetMatrix4("projection", projection);
+            Matrix4 model = Matrix4.CreateRotationY(yaw) * Matrix4.CreateTranslation(Pos);
+            shader.SetMatrix4("model", model);
+        }
+
+        public override void SetLight(Light light, Vector3 viewPos)
+        {
+            shader.SetVector4("objectColor", (Vector4)color);
         }
     }
 }
